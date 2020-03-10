@@ -1,8 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSpring, useTransition, animated } from "react-spring";
+
 import "./main.scss";
 
 const App = () => {
   const [toggle, setToggle] = useState(false);
+
+  useEffect(() => {
+    return () => {};
+  }, []);
+
+  const fadeIn = useSpring({
+    opacity: 1,
+    from: { opacity: 0 },
+    config: { duration: 5000 }
+  });
+
+  const transitions = useTransition(toggle, null, {
+    from: { position: "absolute", opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+    config: { duration: 500 }
+  });
 
   return (
     <div className="page-container">
@@ -25,7 +44,16 @@ const App = () => {
         <div className="pricing-container">
           <div className="pricing-container__item">
             <h5>Basic</h5>
-            <h1 className="price"> {toggle ? "$19.99" : "$199.99"} </h1>
+
+            <div className="price-wrapper">
+              {transitions.map(({ item, key, props }) =>
+                item ? (
+                  <animated.h1 style={props}>$19.99</animated.h1>
+                ) : (
+                  <animated.h1 style={props}>$199.99</animated.h1>
+                )
+              )}
+            </div>
 
             <ul className="pricing-container__list">
               <li>500 GB Storage</li>
@@ -36,7 +64,15 @@ const App = () => {
           </div>
           <div className="pricing-container__item">
             <h5>Professional</h5>
-            <h1 className="price"> {toggle ? "$24.99" : "$249.99"} </h1>
+            <div className="price-wrapper">
+              {transitions.map(({ item, key, props }) =>
+                item ? (
+                  <animated.h1 style={props}>$24.99</animated.h1>
+                ) : (
+                  <animated.h1 style={props}>$249.99</animated.h1>
+                )
+              )}
+            </div>
 
             <ul className="pricing-container__list">
               <li>1 TB Storage</li>
@@ -47,7 +83,15 @@ const App = () => {
           </div>
           <div className="pricing-container__item">
             <h5>Master</h5>
-            <h1 className="price"> {toggle ? "$39.99" : "$399.99"} </h1>
+            <div className="price-wrapper">
+              {transitions.map(({ item, key, props }) =>
+                item ? (
+                  <animated.h1 style={props}>$39.99</animated.h1>
+                ) : (
+                  <animated.h1 style={props}>$399.99</animated.h1>
+                )
+              )}
+            </div>
             <ul className="pricing-container__list">
               <li>2 TB Storage</li>
               <li>10 Users Allowed</li>
